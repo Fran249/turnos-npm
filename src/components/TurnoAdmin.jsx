@@ -45,7 +45,7 @@ function fechaBonita(iso) {
   return texto.charAt(0).toUpperCase() + texto.slice(1)
 }
 
-export default function TurnoAdmin({ adapter, titulo = 'Administrar turnos' }) {
+export default function TurnoAdmin({ adapter, titulo = 'Administrar turnos', theme = 'default' }) {
   const readOnly = adapter.readOnly === true
   const [turnos, setTurnos] = useState([])
   const [form, setForm] = useState({ ...FORM_VACIO, date: hoy() })
@@ -112,7 +112,7 @@ export default function TurnoAdmin({ adapter, titulo = 'Administrar turnos' }) {
     .filter(([, ts]) => ts.length > 0)
 
   return (
-    <section className="turnos" data-testid="turno-admin">
+    <section className={`turnos turnos--theme-${theme}`} data-testid="turno-admin">
       <div className="turnos-cabecera">
         <h2 className="turnos-titulo">{titulo}</h2>
         <span className="turnos-cupo">{turnos.length} turnos</span>

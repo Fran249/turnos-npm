@@ -59,7 +59,7 @@ function franjaDe(hour) {
   return h < 12 ? 'Mañana' : h < 18 ? 'Tarde' : 'Noche'
 }
 
-export default function TurnoPicker({ adapter, user, date, onDateChange, showDateNav = true, onBooked, onUnbooked }) {
+export default function TurnoPicker({ adapter, user, date, onDateChange, showDateNav = true, onBooked, onUnbooked, theme = 'default' }) {
   const [diaSel, setDiaSel] = useState(date || hoy())
   const [turnos, setTurnos] = useState([])
   const [ocupado, setOcupado] = useState('')
@@ -119,7 +119,7 @@ export default function TurnoPicker({ adapter, user, date, onDateChange, showDat
   const porFranja = FRANJAS.map((f) => [f, ordenados.filter((t) => franjaDe(t.hour) === f)]).filter(([, ts]) => ts.length > 0)
 
   return (
-    <section className="turnos" data-testid="turno-picker">
+    <section className={`turnos turnos--theme-${theme}`} data-testid="turno-picker">
       <div className="turnos-cabecera">
         <h2 className="turnos-titulo">Elegir turno</h2>
         {showDateNav && (
