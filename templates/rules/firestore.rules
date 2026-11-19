@@ -1,0 +1,21 @@
+rules_version = '2';
+
+// turnos v0.1.0 — generada por `npx turnos init --firebase`.
+// Publicar:  firebase deploy --only firestore:rules
+//
+// Integridad de la reserva (capacidad + sin duplicados): las reglas de
+// Firestore no pueden expresar "booked.length < capacity", así que el
+// adaptador del paquete `turnos` la garantiza con una transacción
+// (runTransaction) en el cliente. Estas reglas solo controlan ACCESO.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // El horario es público para lectura; solo un admin de TU auth escribe.
+    // AJUSTA el claim a tu esquema (p. ej. request.auth.token.roles).
+    match /turnos/{turno} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "name": "@ffstack/turnos",
+  "version": "0.4.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Turnero npm: componentes usuario/admin de turnos sobre Firebase (Firestore) o Supabase, generados al instalar (npx @ffstack/turnos init).",
+  "type": "module",
+  "license": "MIT",
+  "main": "src/core/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fran249/turnos-react.git"
+  },
+  "exports": {
+    ".": "./src/core/index.js",
+    "./core": "./src/core/index.js",
+    "./adapters/firebase": "./src/adapters/firebase.js",
+    "./adapters/supabase": "./src/adapters/supabase.js"
+  },
+  "bin": {
+    "@ffstack/turnos": "bin/turnos.js",
+    "turnos": "bin/turnos.js"
+  },
+  "files": [
+    "bin",
+    "src/core",
+    "src/adapters",
+    "src/generator.js",
+    "src/postinstall.js",
+    "src/utils",
+    "templates",
+    "README.md",
+    "!**/*.test.js",
+    "!**/*.test.jsx"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "firebase": {
+      "optional": true
+    },
+    "@supabase/supabase-js": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "turnos",
+    "turnero",
+    "scheduling",
+    "shifts",
+    "firebase",
+    "supabase"
+  ],
+  "dependencies": {
+    "commander": "^13.0.0",
+    "inquirer": "^12.0.0",
+    "date-fns": "^4.4.0",
+    "lucide-react": "^1.71.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.9",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitest/coverage-v8": "^5.1.0",
+    "autoprefixer": "^10.6.2",
+    "jsdom": "^31.0.0",
+    "oxlint": "^1.90.0",
+    "tailwindcss": "^3.4.17",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}

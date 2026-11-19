@@ -1,0 +1,363 @@
+/* turnos v0.1.0 — estilos de los componentes generados.
+   Autónomos (sin Tailwind, sin fuentes externas) y acotados a .turnos
+   para no chocar con el tema de tu app.
+
+   TEMA — el componente NO trae paleta ni tipografía propia. Por defecto
+   hereda las del proyecto (currentColor / inherit) y se ve nativo en
+   cualquier app. Para darle identidad, sobreescribí estos tokens desde tu
+   CSS; los valores por defecto viven en `:where(.turnos)` (especificidad 0),
+   así que cualquier regla tuya gana sin pelear con import order:
+
+     .turnos {
+       --turnos-font: "Inter", system-ui, sans-serif;
+       --turnos-serif: Georgia, serif;          // hora y título
+       --turnos-bg: #faf7f1;                    // fondo de la tarjeta
+       --turnos-surface: #fff;                  // filas, talones, paneles
+       --turnos-field: #faf7f1;                 // inputs del admin
+       --turnos-ink: #221a12;                   // texto y bordes fuertes
+       --turnos-soft: #6b6257;                  // texto secundario
+       --turnos-line: #e6ded2;                  // bordes y líneas
+       --turnos-accent: #3f5a2f;                // foco, avisos OK
+       --turnos-danger: #9c3b2e;                // errores y eliminar
+       --turnos-primary-bg: #221a12;            // botón primario
+       --turnos-primary-ink: #faf7f1;
+       --turnos-primary-bg-hover: #3a2c1f;
+     }
+
+   Los TAMAÑOS de texto y el espaciado no son tokens: son parte del
+   componente y no cambian con el tema. Los estados y prioridades también
+   son tokens (--turnos-status-*, --turnos-priority-*).
+
+   Identidad "papel y talón": el usuario recibe talones (stub) con línea de
+   corte y muescas; el administrador trabaja sobre un registro rayado. La hora
+   es la protagonista tipográfica (cifras tabulares). Un solo gesto de
+   movimiento: el grupo entra al cambiar de día. */
+
+:where(.turnos) {
+  --turnos-font: inherit;
+  --turnos-serif: var(--turnos-font);
+
+  --turnos-bg: transparent;
+  --turnos-surface: transparent;
+  --turnos-field: color-mix(in srgb, currentColor 4%, transparent);
+
+  --turnos-ink: currentColor;
+  --turnos-soft: color-mix(in srgb, currentColor 62%, transparent);
+  --turnos-line: color-mix(in srgb, currentColor 18%, transparent);
+
+  --turnos-accent: currentColor;
+  --turnos-danger: currentColor;
+  --turnos-status-pending: var(--turnos-soft);
+  --turnos-status-confirmed: var(--turnos-accent);
+  --turnos-status-completed: var(--turnos-soft);
+  --turnos-status-cancelled: var(--turnos-danger);
+  --turnos-priority-low: var(--turnos-soft);
+  --turnos-priority-medium: var(--turnos-soft);
+  --turnos-priority-high: var(--turnos-danger);
+
+  /* Tonal por defecto: se lee sobre cualquier fondo, sin paleta. */
+  --turnos-primary-bg: color-mix(in srgb, currentColor 12%, transparent);
+  --turnos-primary-ink: currentColor;
+  --turnos-primary-bg-hover: color-mix(in srgb, currentColor 20%, transparent);
+
+  --turnos-radius: 8px;
+}
+
+.turnos {
+  font-family: var(--turnos-font);
+  color: var(--turnos-ink);
+  background: var(--turnos-bg);
+  border: 1px solid var(--turnos-line);
+  border-radius: var(--turnos-radius);
+  padding: 22px;
+  max-width: 720px;
+}
+
+.turnos * { box-sizing: border-box; }
+.turnos :focus-visible { outline: 2px solid var(--turnos-accent); outline-offset: 2px; }
+
+/* Encabezado: título + navegación del día */
+.turnos-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.turnos-titulo { font-family: var(--turnos-serif); font-size: 1.45rem; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+.turnos-nav { display: flex; align-items: center; gap: 6px; }
+.turnos-nav .turnos-btn { padding: 5px 10px; font-size: 0.95rem; line-height: 1; }
+.turnos-campo {
+  border: 1px solid var(--turnos-line);
+  border-radius: var(--turnos-radius);
+  background: var(--turnos-surface);
+  color: var(--turnos-ink);
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Franja horaria (Mañana / Tarde / Noche, o la fecha del admin):
+   etiqueta + línea que recorta la franja + cantidad */
+.turnos-franja-grupo { margin-top: 16px; animation: turnos-entra 160ms ease-out both; }
+.turnos-franja {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--turnos-soft);
+}
+.turnos-franja::after { content: ""; flex: 1; height: 1px; background: var(--turnos-line); }
+
+.turnos-lista { list-style: none; margin: 0; padding: 0; }
+
+/* ---- TALÓN: la fila que el usuario elige.
+   La línea de corte está en la columna de acción: borde punteado + dos
+   muescas recortadas sobre el borde superior e inferior. Las muescas usan
+   --turnos-bg: si tu tarjeta es transparente, dejá ese token con el fondo
+   real de la página para que la perforación se vea. */
+.turnos-talon {
+  position: relative;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) auto auto 104px;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  margin-top: 8px;
+  border: 1px solid var(--turnos-line);
+  border-radius: var(--turnos-radius);
+  background:
+    radial-gradient(circle at calc(100% - 116px) 0, var(--turnos-bg) 6px, transparent 6.5px),
+    radial-gradient(circle at calc(100% - 116px) 100%, var(--turnos-bg) 6px, transparent 6.5px),
+    var(--turnos-surface);
+  transition: border-color 0.15s ease;
+}
+.turnos-talon:hover { border-color: var(--turnos-ink); }
+.turnos-talon--cancelada { opacity: 0.55; }
+.turnos-talon--cancelada .turnos-talon-titulo { text-decoration: line-through; }
+
+/* La hora manda: serif (token), tabular, grande */
+.turnos-talon-hora { display: grid; gap: 3px; }
+.turnos-hora {
+  font-family: var(--turnos-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+.turnos-dur { font-size: 0.7rem; color: var(--turnos-soft); font-variant-numeric: tabular-nums; }
+
+.turnos-talon-datos { display: grid; gap: 2px; min-width: 0; }
+.turnos-talon-titulo { font-size: 0.95rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.turnos-bajito { font-size: 0.76rem; color: var(--turnos-soft); }
+
+/* Sello de estado: tinta sobre papel, borde fino, sin relleno */
+.turnos-sello {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  color: var(--turnos-soft);
+  white-space: nowrap;
+}
+.turnos-sello--pending { color: var(--turnos-status-pending); }
+.turnos-sello--confirmed { color: var(--turnos-status-confirmed); }
+.turnos-sello--completed { color: var(--turnos-status-completed); }
+.turnos-sello--cancelled { color: var(--turnos-status-cancelled); }
+
+.turnos-cupo {
+  font-size: 0.74rem;
+  color: var(--turnos-soft);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.turnos-talon-accion {
+  display: flex;
+  justify-content: flex-end;
+  align-self: stretch;
+  align-items: center;
+  padding-left: 12px;
+  border-left: 1px dashed var(--turnos-line);
+}
+
+/* Botones: el primario se pinta con --turnos-primary-* */
+.turnos-btn {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 13px;
+  border-radius: 6px;
+  border: 1px solid var(--turnos-line);
+  background: transparent;
+  color: var(--turnos-ink);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.turnos-btn:hover:not(:disabled) { border-color: var(--turnos-ink); }
+.turnos-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.turnos-btn--primary {
+  background: var(--turnos-primary-bg);
+  border-color: transparent;
+  color: var(--turnos-primary-ink);
+}
+.turnos-btn--primary:hover:not(:disabled) {
+  background: var(--turnos-primary-bg-hover);
+  border-color: transparent;
+}
+.turnos-btn--soft { color: var(--turnos-soft); }
+.turnos-btn--danger { color: var(--turnos-danger); border-color: color-mix(in srgb, var(--turnos-danger) 45%, transparent); }
+.turnos-btn--danger:hover:not(:disabled) { border-color: var(--turnos-danger); }
+
+.turnos-vacio { color: var(--turnos-soft); font-size: 0.88rem; padding: 26px 4px; text-align: center; }
+
+.turnos-aviso { font-size: 0.84rem; margin: 14px 0 0; }
+.turnos-aviso--ok { color: var(--turnos-accent); font-weight: 600; }
+.turnos-aviso--err { color: var(--turnos-danger); }
+
+/* ---- REGISTRO DEL ADMINISTRADOR: filas rayadas, sin talón. */
+
+/* Formulario en rejilla de 12 columnas: los campos anchos ocupan más y el
+   botón cierra la última fila alineado a la derecha. El ritmo vertical
+   (14px entre filas) es mayor que el horizontal para que cada campo se lea
+   como una unidad y no como una sopa de cajas. */
+.turnos-form {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px 12px;
+  align-items: end;
+  background: var(--turnos-surface);
+  border: 1px solid var(--turnos-line);
+  border-radius: var(--turnos-radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.turnos-form label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--turnos-soft);
+}
+.turnos-form input,
+.turnos-form select,
+.turnos-form textarea {
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  border: 1px solid var(--turnos-line);
+  border-radius: 6px;
+  background: var(--turnos-field);
+  color: var(--turnos-ink);
+  padding: 9px 10px;
+}
+.turnos-form input::placeholder { color: var(--turnos-soft); opacity: 0.75; }
+
+.turnos-f-titulo { grid-column: span 5; }
+.turnos-f-staff { grid-column: span 4; }
+.turnos-f-prioridad { grid-column: span 3; }
+.turnos-f-fecha,
+.turnos-f-hora,
+.turnos-f-duracion,
+.turnos-f-capacidad { grid-column: span 3; }
+.turnos-f-notas { grid-column: span 8; }
+.turnos-form .turnos-btn { grid-column: span 4; justify-self: end; align-self: end; }
+
+.turnos-error-lista {
+  margin: 10px 0 0;
+  padding: 10px 12px 10px 26px;
+  color: var(--turnos-danger);
+  font-size: 0.8rem;
+  background: color-mix(in srgb, var(--turnos-danger) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--turnos-danger) 28%, transparent);
+  border-radius: 6px;
+}
+
+.turnos-fila {
+  display: grid;
+  grid-template-columns: 88px 54px minmax(0, 1fr) 40px auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--turnos-line);
+}
+.turnos-lista .turnos-fila:last-child { border-bottom: 0; }
+.turnos-fecha { font-size: 0.75rem; color: var(--turnos-soft); font-variant-numeric: tabular-nums; }
+.turnos-fila .turnos-hora { font-size: 1.05rem; }
+.turnos-fila .turnos-cuerpo { display: grid; gap: 2px; min-width: 0; }
+.turnos-fila .turnos-cuerpo strong { font-size: 0.92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.turnos-prio { font-size: 0.7rem; font-weight: 600; white-space: nowrap; }
+.turnos-prio--low { color: var(--turnos-priority-low); }
+.turnos-prio--medium { color: var(--turnos-priority-medium); }
+.turnos-prio--high { color: var(--turnos-priority-high); }
+
+.turnos-estado {
+  font: inherit;
+  font-size: 0.76rem;
+  border: 1px solid var(--turnos-line);
+  border-radius: 6px;
+  background: var(--turnos-surface);
+  color: var(--turnos-ink);
+  padding: 5px 8px;
+}
+
+/* El único momento de movimiento: el grupo entra al cambiar de día. */
+@keyframes turnos-entra {
+  from { opacity: 0; transform: translateY(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .turnos-franja-grupo { animation: none; }
+}
+
+/* En pantallas angostas el talón pierde la perforación y pasa a dos columnas. */
+@media (max-width: 560px) {
+  .turnos-talon {
+    grid-template-columns: 54px minmax(0, 1fr);
+    grid-template-areas:
+      "hora datos"
+      "sello cupo"
+      "accion accion";
+    row-gap: 10px;
+    background: var(--turnos-surface);
+  }
+  .turnos-talon-hora { grid-area: hora; }
+  .turnos-talon-datos { grid-area: datos; }
+  .turnos-sello { grid-area: sello; justify-self: start; }
+  .turnos-cupo { grid-area: cupo; justify-self: end; }
+  .turnos-talon-accion {
+    grid-area: accion;
+    border-left: 0;
+    border-top: 1px dashed var(--turnos-line);
+    padding: 10px 0 0;
+    justify-content: stretch;
+  }
+  .turnos-talon-accion .turnos-btn { width: 100%; }
+  .turnos-fila { grid-template-columns: 1fr auto; row-gap: 8px; }
+  .turnos-fila .turnos-fecha, .turnos-fila .turnos-hora { grid-column: auto; }
+}
+
+/* Formulario en dos columnas: los campos anchos y el botón ocupan la fila. */
+@media (max-width: 620px) {
+  .turnos-form { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px; }
+  .turnos-f-titulo,
+  .turnos-f-staff,
+  .turnos-f-notas,
+  .turnos-f-prioridad,
+  .turnos-form .turnos-btn { grid-column: span 2; }
+  .turnos-f-fecha,
+  .turnos-f-hora,
+  .turnos-f-duracion,
+  .turnos-f-capacidad { grid-column: span 1; }
+  .turnos-form .turnos-btn { justify-self: stretch; }
+}
