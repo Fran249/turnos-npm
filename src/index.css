@@ -230,3 +230,36 @@ h1, h2, h3 {
   --turnos-primary-ink: hsl(var(--background));
   --turnos-primary-bg-hover: hsl(var(--ink-hover));
 }
+
+/* ============================================================
+   TEMAS — el componente emite `turnos--theme-<nombre>` según la prop
+   `theme`; cada tema solo sobreescribe TOKENOS, nunca estructura.
+   "default" es el bloque .turnos de arriba (la identidad de esta app).
+   ============================================================ */
+.turnos--theme-modern {
+  --turnos-bg: #f3f4f6;
+  --turnos-surface: #ffffff;
+  --turnos-accent: #2563eb;
+  --turnos-radius: 12px;
+}
+
+.turnos--theme-glass {
+  --turnos-bg: rgba(255, 255, 255, 0.2);
+  --turnos-surface: rgba(255, 255, 255, 0.5);
+  --turnos-accent: #8b5cf6;
+  --turnos-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.turnos--theme-dark {
+  --turnos-bg: #111827;
+  --turnos-surface: #1f2937;
+  --turnos-ink: #f9fafb;
+  --turnos-soft: #9ca3af;
+  --turnos-line: #374151;
+  --turnos-accent: #10b981;
+  --turnos-primary-bg: #10b981;
+  --turnos-primary-bg-hover: #0d9668;
+  --turnos-primary-ink: #000;
+  --turnos-radius: 8px;
+}

@@ -3,7 +3,7 @@ import './turnos.css'
 
 /**
  * TurnoPicker — el usuario ve los turnos de un día y elige uno.
- * Generado por `npx turnos init` (turnos v0.1.0).
+ * Generado por `npx @ffstack/turnos init`.
  *
  * Uso:
  *   import { turnos } from './turnos/turnos.config'
@@ -22,6 +22,7 @@ import './turnos.css'
  *     la controla el anfitrión (tira semanal, calendario) para no duplicar
  *     los controles de día.
  *   - onBooked?: (turn) => void   /   onUnbooked?: (turn) => void
+ *   - theme?: 'default' | 'modern' | 'glass' | 'dark' (default 'default').
  *
  * El componente es autónomo: solo consume el contrato del cliente
  * (listTurnos/bookTurno/unbookTurno/subscribe), así que funciona igual

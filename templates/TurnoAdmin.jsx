@@ -3,7 +3,7 @@ import './turnos.css'
 
 /**
  * TurnoAdmin — el administrador controla los turnos: crea, cambia su
- * estado y elimina. Generado por `npx turnos init` (turnos v0.1.0).
+ * estado y elimina. Generado por `npx @ffstack/turnos init`.
  *
  * Uso:
  *   import { turnos } from './turnos/turnos.config'
@@ -13,6 +13,7 @@ import './turnos.css'
  * Props:
  *   - adapter: cliente `turnos` (el que exporta turnos.config.js).
  *   - titulo?: texto del encabezado (default 'Administrar turnos').
+ *   - theme?: 'default' | 'modern' | 'glass' | 'dark' (default 'default').
  *
  * Funciona con el adaptador que sea (Firebase, Supabase o 'memory'):
  * solo usa upsertTurno / removeTurno / subscribe del contrato.
