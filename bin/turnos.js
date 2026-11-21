@@ -5,6 +5,7 @@ import { generateFiles, resolveTargetDir } from '../src/generator.js';
 import { runPostinstall } from '../src/postinstall.js';
 import { installDependencies } from '../src/utils/cli-utils.js';
 import { ENV_TEMPLATES } from '../src/utils/env-templates.js';
+import { getPackageVersion } from '../src/utils/version.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -61,7 +62,7 @@ const program = new Command();
 program
   .name('turnos')
   .description('CLI para instalar y configurar turnos en tu proyecto')
-  .version('0.3.1');
+  .version(getPackageVersion());
 
 program
   .command('init')

@@ -1,6 +1,6 @@
 {
   "name": "@ffstack/turnos",
-  "version": "0.4.2",
+  "version": "0.4.1",
   "publishConfig": {
     "access": "public"
   },
@@ -10,7 +10,7 @@
   "main": "src/core/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fran249/turnos-react.git"
+    "url": "git+https://github.com/Fran249/turnos-npm.git"
   },
   "exports": {
     ".": "./src/core/index.js",
@@ -19,7 +19,6 @@
     "./adapters/supabase": "./src/adapters/supabase.js"
   },
   "bin": {
-    "@ffstack/turnos": "bin/turnos.js",
     "turnos": "bin/turnos.js"
   },
   "files": [

@@ -1,4 +1,4 @@
--- turnos v0.1.0 — migración Supabase
+-- turnos v{{TURNOS_VERSION}} — migración Supabase
 -- Generada por `npx turnos init --supabase`.
 -- Ejecutar: supabase db push   (o psql "$DATABASE_URL" < 0001_turnos.sql)
 

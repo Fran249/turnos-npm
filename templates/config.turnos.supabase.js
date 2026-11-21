@@ -1,4 +1,4 @@
-// Generado por `npx turnos init --supabase` (turnos v0.1.0).
+// Generado por `npx turnos init --supabase` (turnos v{{TURNOS_VERSION}}).
 // 1) Instala el cliente:  npm i @supabase/supabase-js
 // 2) Reemplaza URL y ANON KEY (Supabase Dashboard → Project Settings → API).
 // 3) Ejecuta la migración: supabase-migrations/0001_turnos.sql

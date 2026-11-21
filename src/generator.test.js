@@ -3,6 +3,7 @@ import { mkdtemp, rm, readFile, writeFile, access } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { generateFiles, resolveTargetDir, GENERATED_FILES } from './generator.js'
+import { getPackageVersion } from './utils/version.js'
 
 /**
  * Spec for the install-time generator: `npx turnos init --firebase|--supabase`
@@ -81,6 +82,24 @@ describe('generateFiles', () => {
   it('rejects unknown providers', async () => {
     await expect(generateFiles({ provider: 'couchdb', targetDir: dir }))
       .rejects.toThrowError(/proveedor/)
+  })
+
+  it('stamps every generated artifact with the real package version, never a stale literal', async () => {
+    const version = getPackageVersion()
+    const res = await generateFiles({ provider: 'memory', targetDir: dir })
+    expect(version).toMatch(/^\d+\.\d+\.\d+/)
+    const stamped = [
+      'src/turnos/TurnoPicker.jsx',
+      'src/turnos/TurnoAdmin.jsx',
+      'src/turnos/turnos.css',
+      'src/turnos/turnos.config.js',
+    ]
+    for (const rel of stamped) {
+      const content = await readFile(path.join(dir, rel), 'utf8')
+      expect(content, rel).toContain(`v${version}`)
+      expect(content, `${rel} must not ship a stale version literal`).not.toMatch(/v0\.(?:1|3)\.\d+/)
+    }
+    expect(res.generated.length).toBeGreaterThan(0)
   })
 })
 
