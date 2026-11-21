@@ -1,11 +1,6 @@
-# dependencias
 node_modules/
-
-# build
-dist/
-
-# carpeta de test local (dist + node_modules)
-turnos/
-
-# logueo
+coverage/
 *.log
+.env
+.env.local
+.env.*.local

@@ -3,7 +3,7 @@ import './turnos.css'
 
 /**
  * TurnoAdmin — el administrador controla los turnos: crea, cambia su
- * estado y elimina. Generado por `npx @ffstack/turnos init`.
+ * estado y elimina. Generado por `npx turnos init` (turnos v{{TURNOS_VERSION}}).
  *
  * Uso:
  *   import { turnos } from './turnos/turnos.config'
@@ -13,7 +13,6 @@ import './turnos.css'
  * Props:
  *   - adapter: cliente `turnos` (el que exporta turnos.config.js).
  *   - titulo?: texto del encabezado (default 'Administrar turnos').
- *   - theme?: 'default' | 'modern' | 'glass' | 'dark' (default 'default').
  *
  * Funciona con el adaptador que sea (Firebase, Supabase o 'memory'):
  * solo usa upsertTurno / removeTurno / subscribe del contrato.
@@ -46,7 +45,7 @@ function fechaBonita(iso) {
   return texto.charAt(0).toUpperCase() + texto.slice(1)
 }
 
-export default function TurnoAdmin({ adapter, titulo = 'Administrar turnos', theme = 'default' }) {
+export default function TurnoAdmin({ adapter, titulo = 'Administrar turnos' }) {
   const readOnly = adapter.readOnly === true
   const [turnos, setTurnos] = useState([])
   const [form, setForm] = useState({ ...FORM_VACIO, date: hoy() })
@@ -113,7 +112,7 @@ export default function TurnoAdmin({ adapter, titulo = 'Administrar turnos', the
     .filter(([, ts]) => ts.length > 0)
 
   return (
-    <section className={`turnos turnos--theme-${theme}`} data-testid="turno-admin">
+    <section className="turnos" data-testid="turno-admin">
       <div className="turnos-cabecera">
         <h2 className="turnos-titulo">{titulo}</h2>
         <span className="turnos-cupo">{turnos.length} turnos</span>

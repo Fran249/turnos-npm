@@ -1,4 +1,4 @@
-// Generado por `npx turnos init --memory` (turnos v0.3.1).
+// Generado por `npx turnos init --memory` (turnos v{{TURNOS_VERSION}}).
 // Modo demo sin base de datos: usa el adaptador en memoria integrado.
 // Los turnos se visualizan pero NO se pueden reservar ni crear hasta que
 // cambies a Firebase o Supabase.

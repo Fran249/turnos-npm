@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// turnos v0.1.0 — generada por `npx turnos init --firebase`.
+// turnos v{{TURNOS_VERSION}} — generada por `npx turnos init --firebase`.
 // Publicar:  firebase deploy --only firestore:rules
 //
 // Integridad de la reserva (capacidad + sin duplicados): las reglas de

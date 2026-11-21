@@ -1,4 +1,4 @@
-// Generado por `npx turnos init --firebase` (turnos v0.1.0).
+// Generado por `npx turnos init --firebase` (turnos v{{TURNOS_VERSION}}).
 // 1) Instala:  npm i firebase
 // 2) Reemplaza la config por la de TU proyecto (Firebase console →
 //    Project settings → Your apps). NUNCA subas credenciales reales al repo:

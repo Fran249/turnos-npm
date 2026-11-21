@@ -1,6 +1,7 @@
 import { promises as fsp } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { stampVersion } from './utils/version.js';
 
 /**
  * Install-time generator: creates the consumer-side artifacts of `turnos`
@@ -105,6 +106,10 @@ export async function generateFiles({ provider, targetDir, force = false, demoSe
     }
     await fsp.mkdir(path.dirname(dst), { recursive: true });
     let content = await fsp.readFile(path.join(TEMPLATES_DIR, srcRel), 'utf8');
+
+    // Sellar la versión real del paquete en el encabezado de cada artefacto,
+    // de modo que un bump en package.json actualice todos los templates a la vez.
+    content = stampVersion(content);
 
     // Si es modo memoria y tiene demoSeed, inyectar las turns en el config generado
     if (provider === 'memory' && rel === 'src/turnos/turnos.config.js' && demoSeed) {
