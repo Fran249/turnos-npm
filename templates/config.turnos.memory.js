@@ -4,7 +4,7 @@
 // cambies a Firebase o Supabase.
 // Para cambiar de proveedor, edita este archivo y ejecuta:
 //   npx turnos init --firebase   (o --supabase)
-import { createClient } from 'turnos'
+import { createClient } from '@ffstack/turnos'
 
 export const turnos = createClient({
   provider: 'memory',

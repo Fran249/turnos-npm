@@ -3,7 +3,7 @@
 // 2) Reemplaza URL y ANON KEY (Supabase Dashboard → Project Settings → API).
 // 3) Ejecuta la migración: supabase-migrations/0001_turnos.sql
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-import { createClient } from 'turnos'
+import { createClient } from '@ffstack/turnos'
 
 const supabase = createSupabaseClient(
   'https://TU_ORG.supabase.co', // ← reemplazar por tu URL

@@ -10,7 +10,7 @@ import {
   collection, getDocs, getDoc, query, where, onSnapshot,
   doc, deleteDoc, setDoc, updateDoc, runTransaction,
 } from 'firebase/firestore'
-import { createClient } from 'turnos'
+import { createClient } from '@ffstack/turnos'
 
 const app = initializeApp({
   apiKey: 'TU_API_KEY',
