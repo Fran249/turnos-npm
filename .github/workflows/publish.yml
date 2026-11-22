@@ -1,43 +1,75 @@
 name: publish
+
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+
 permissions:
   id-token: write
-  contents: read
+  contents: write
+
 defaults:
   run:
     working-directory: .
+
 jobs:
   test-and-publish:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
           package-manager-cache: false
+
       - name: Ensure npm CLI supports trusted publishing
         run: npm install -g npm@^11.5.1
+
       - name: Install dependencies
         run: npm ci
+
       - name: Run test suite
         run: npm test
-      - name: Verify tag matches version
-        if: startsWith(github.ref, 'refs/tags/')
+
+      - name: Read local and published versions
+        id: versions
         run: |
-          tag="${GITHUB_REF#refs/tags/v}"
-          version="$(node -p "require('./package.json').version")"
-          if [ "$tag" != "$version" ]; then
-            echo "::error::Tag v$tag does not match package.json version $version"
-            exit 1
-          fi
+          LOCAL_VERSION="$(node -p "require('./package.json').version")"
+          PUBLISHED_VERSION="$(npm view @ffstack/turnos version 2>/dev/null || echo '0.0.0')"
+          echo "local=$LOCAL_VERSION" >> $GITHUB_OUTPUT
+          echo "published=$PUBLISHED_VERSION" >> $GITHUB_OUTPUT
+          echo "Local version: $LOCAL_VERSION, published: $PUBLISHED_VERSION"
+
+      - name: Compare versions
+        id: compare
+        run: |
+          node -e "
+            const semver = (v) => v.split('.').map(Number);
+            const local = semver('${{ steps.versions.outputs.local }}');
+            const published = semver('${{ steps.versions.outputs.published }}');
+            const isNewer =
+              local[0] > published[0] ||
+              (local[0] === published[0] && local[1] > published[1]) ||
+              (local[0] === published[0] && local[1] === published[1] && local[2] > published[2]);
+            console.log('isNewer=' + isNewer);
+            process.exit(isNewer ? 0 : 1);
+          "
+
+      - name: Create and push version tag
+        if: steps.compare.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "v${{ steps.versions.outputs.local }}"
+          git push origin "v${{ steps.versions.outputs.local }}"
+
       - name: Publish to npm
-        if: startsWith(github.ref, 'refs/tags/')
+        if: steps.compare.outcome == 'success'
         run: npm publish --access public
